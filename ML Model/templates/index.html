@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html >
+<!--From https://codepen.io/frytyler/pen/EGdtg-->
+<head>
+  <meta charset="UTF-8">
+  <title>ML API</title>
+  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" href="#">
+
+</head>
+
+<body>
+ <div class="login">
+	<h1>Phishing site prediction</h1>
+
+     <!-- Main Input For Receiving Query to our ML -->
+    <form method="POST" action="/predict">
+
+    	<input type="text" id ="text" name="text" placeholder="URL" required="required" />
+        <button type="submit" >Predict</button>
+
+    </form>
+   <br>
+   <br>
+    <p>Prediction: <span id="prediction"></span></p>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $('form').on('submit', function(event) {
+            event.preventDefault();
+            var text = $('#text').val();
+            $.ajax({
+                type: 'POST',
+                url: '/predict',
+                data: {'text': text},
+                success: function(data) {
+                    var prediction = data.prediction;
+                    if (prediction == 1) {
+                        $('#prediction').text('This website is legitimate').addClass('result-real').removeClass('result-fake');
+                    } else {
+                        $('#prediction').text('This website is not legitimate').addClass('result-fake').removeClass('result-real');
+                    }
+                }
+            });
+        });
+    </script>
+
+
+ </div>
+</body>
+</html>
